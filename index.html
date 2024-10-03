@@ -9,12 +9,32 @@
             width: 25px;
             height: 25px;
         }
+
+        .flex-table {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flex-row {
+            display: flex;
+        }
+
+        .flex-cell {
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            /* No padding since width/height are fixed */
+            border: 1px solid #ccc;
+            text-align: center;
+            line-height: 25px;
+            /* Vertically center the text */
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Pixelated</h1>        
+        <h1>Pixelated</h1>
     </header>
 
     <section>
@@ -24,8 +44,8 @@
     </section>
 
     <section>
-        <div id="table">
-            
+        <div class="flex-table" id="table">
+
         </div>
     </section>
 

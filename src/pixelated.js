@@ -29,21 +29,37 @@ function buildTable() {
 }
 
 function displayTable() {
-    let html = "<table>";
+    let html = ""
 
-    for (let r = 0; r < table.length; r++)
-    {
-        html += "<tr>";
+    for (let r = 0; r < table.length; r++) {
+        html += '<div class="flex-row">';
+        
         for (let c = 0; c < table[r].length; c++)
-            html += '<td class="cell" style="background-color: ' + getRandomColor() + ';">' + '</td>';
+            html += '<div class="flex-cell" style="background-color: ' + getRandomColor() + '"></div>';
 
-        html += "</tr>";
+        html += "</div>"
     }
 
-    html += "</table>";
-
     document.getElementById("table").innerHTML = html;
+
 }
+
+// function displayTable() {
+//     let html = "<table>";
+
+//     for (let r = 0; r < table.length; r++)
+//     {
+//         html += "<tr>";
+//         for (let c = 0; c < table[r].length; c++)
+//             html += '<td class="cell" style="background-color: ' + getRandomColor() + ';">' + '</td>';
+
+//         html += "</tr>";
+//     }
+
+//     html += "</table>";
+
+//     document.getElementById("table").innerHTML = html;
+// }
 
 function getRandomColor() {
     const array = new Uint32Array(1);
