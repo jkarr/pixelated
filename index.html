@@ -9,27 +9,49 @@
             width: 25px;
             height: 25px;
         }
+
+        .flex-table {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flex-row {
+            display: flex;
+        }
+
+        .flex-cell {
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            line-height: 25px;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Pixelated</h1>        
+        <h1>Pixelated</h1>
     </header>
 
     <section>
         How many rows do you want? <input type="number" id="numberOfRows"> <br />
         How many columns do you want? <input type="number" id="numberOfColumns"> <br />
         <button id="playButton">Play</button>
+        <p>
+            <div class="flex-table">
+                <div class="flex-row" id="actionTable">
+                </div>
+            </div>
+        </p>
     </section>
 
     <section>
-        <div id="table">
-            
+        <div class="flex-table" id="table">
+
         </div>
     </section>
 
-    <script src="./src/pixelated.js"></script>
+    <script src="./src/pixelated.js" type="module"></script>
 </body>
 
 </html>
