@@ -11,7 +11,9 @@ let table = [];
 
 let numberOfRows = 0;
 let numberOfColumns = 0;
-let startingCell;
+let startingRow = 0;
+let startingColumn = 0;
+let gameColor;
 let actionTableBuilt = false;
 
 document.getElementById('playButton').addEventListener('click', function () {
@@ -27,7 +29,9 @@ document.getElementById('playButton').addEventListener('click', function () {
     if (!actionTableBuilt)
         buildActionTable();
 
-    startingCell = table[0][0];
+    startingRow = 0;
+    startingColumn = 1;
+    gameColor = table[0][0];
 });
 
 function buildTable() {
@@ -79,9 +83,32 @@ function getRandomColor() {
     return colors[randomIndex];
 }
 
-function doMove(color) {
-    console.log(color);
+function doMove(selectedColor) {
+    if (selectedColor === gameColor)
+        return;
+
+    floodFill(0, 0, gameColor, selectedColor);
+    gameColor = selectedColor;
+
+    displayTable();
 }
+
+function floodFill(row, col, targetColor, replacementColor) {
+    if (row < 0 || row >= numberOfRows || col < 0 || col >= numberOfColumns) 
+        return;
+
+    if (table[row][col] !== targetColor)
+        return;
+
+    table[row][col] = replacementColor;
+
+    // Recursively call floodFill on all adjacent cells (up, down, left, right)
+    floodFill(row + 1, col, targetColor, replacementColor);  // Down
+    floodFill(row - 1, col, targetColor, replacementColor);  // Up
+    floodFill(row, col + 1, targetColor, replacementColor);  // Right
+    floodFill(row, col - 1, targetColor, replacementColor);  // Left
+}
+
 
 function createRow() {
     const row = document.createElement("div");
