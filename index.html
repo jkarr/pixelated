@@ -23,11 +23,7 @@
             width: 25px;
             height: 25px;
             padding: 0;
-            /* No padding since width/height are fixed */
-            border: 1px solid #ccc;
-            text-align: center;
             line-height: 25px;
-            /* Vertically center the text */
         }
     </style>
 </head>
@@ -41,6 +37,12 @@
         How many rows do you want? <input type="number" id="numberOfRows"> <br />
         How many columns do you want? <input type="number" id="numberOfColumns"> <br />
         <button id="playButton">Play</button>
+        <p>
+            <div class="flex-table">
+                <div class="flex-row" id="actionTable">
+                </div>
+            </div>
+        </p>
     </section>
 
     <section>
@@ -49,7 +51,7 @@
         </div>
     </section>
 
-    <script src="./src/pixelated.js"></script>
+    <script src="./src/pixelated.js" type="module"></script>
 </body>
 
 </html>

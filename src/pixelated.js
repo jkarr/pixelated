@@ -1,70 +1,99 @@
-const colors = [
-    "#FFFF00",  // Yellow
-    "#0000FF",  // Blue
-    "#FF0000",  // Red
-    "#008000"   // Green
-];
+import Color from './color.js';
 
-let numberOfRows = 0;
-let numberOfColumns = 0;
+const colors = [
+    new Color("Yellow", "#FFFF00", "y"),
+    new Color("Blue", "#0000FF", "b"),
+    new Color("Red", "#FF0000", "r"),
+    new Color("Green", "#008000", "g")
+];
 
 let table = [];
 
-document.getElementById('playButton').addEventListener('click', function() {
+let numberOfRows = 0;
+let numberOfColumns = 0;
+let startingCell;
+let actionTableBuilt = false;
+
+document.getElementById('playButton').addEventListener('click', function () {
+    table = [];
+    document.getElementById("table").innerHTML = "";
+
     numberOfRows = document.getElementById('numberOfRows').value;
     numberOfColumns = document.getElementById('numberOfColumns').value;
 
     buildTable();
     displayTable();
+
+    if (!actionTableBuilt)
+        buildActionTable();
+
+    startingCell = table[0][0];
 });
 
 function buildTable() {
     for (let r = 0; r < numberOfRows; r++) {
         let columns = [];
-        for (let c = 0; c < numberOfColumns; c++)
-            columns[c] = r + ":" + c;
+        for (let c = 0; c < numberOfColumns; c++) {
+            columns[c] = getRandomColor();
+        }
 
         table[r] = columns;
     }
 }
 
-function displayTable() {
-    let html = ""
+function buildActionTable() {
+    let actionTable = document.getElementById("actionTable");
 
-    for (let r = 0; r < table.length; r++) {
-        html += '<div class="flex-row">';
-        
-        for (let c = 0; c < table[r].length; c++)
-            html += '<div class="flex-cell" style="background-color: ' + getRandomColor() + '"></div>';
+    for (let c = 0; c < colors.length; c++) {
+        const colorDiv = createColoredCell(colors[c].hexValue);
 
-        html += "</div>"
+        colorDiv.addEventListener('click', function () {
+            doMove(colors[c]);
+        });
+
+        actionTable.appendChild(colorDiv);
     }
 
-    document.getElementById("table").innerHTML = html;
-
+    actionTableBuilt = true;
 }
 
-// function displayTable() {
-//     let html = "<table>";
+function displayTable() {
+    let gameBoard = document.getElementById("table");
+    gameBoard.innerHTML = "";
+    
+    for (let r = 0; r < table.length; r++) {
+        const gameRow = createRow();
 
-//     for (let r = 0; r < table.length; r++)
-//     {
-//         html += "<tr>";
-//         for (let c = 0; c < table[r].length; c++)
-//             html += '<td class="cell" style="background-color: ' + getRandomColor() + ';">' + '</td>';
+        for (let c = 0; c < table[r].length; c++)
+            gameRow.appendChild(createColoredCell(table[r][c].hexValue));
 
-//         html += "</tr>";
-//     }
-
-//     html += "</table>";
-
-//     document.getElementById("table").innerHTML = html;
-// }
+        gameBoard.appendChild(gameRow);
+    }
+}
 
 function getRandomColor() {
     const array = new Uint32Array(1);
     window.crypto.getRandomValues(array);
-    randomIndex = array[0] % colors.length;
+    let randomIndex = array[0] % colors.length;
 
     return colors[randomIndex];
+}
+
+function doMove(color) {
+    console.log(color);
+}
+
+function createRow() {
+    const row = document.createElement("div");
+    row.className = 'flex-row';
+
+    return row;
+}
+
+function createColoredCell(backgroundColor) {
+    const colorDiv = document.createElement("div");
+    colorDiv.className = 'flex-cell';
+    colorDiv.style.backgroundColor = backgroundColor;
+
+    return colorDiv;
 }
