@@ -1,22 +1,25 @@
 import Color from './color.js';
 
-const colors = [
-    new Color("Yellow", "#FFFF00", "y"),
-    new Color("Blue", "#0000FF", "b"),
-    new Color("Red", "#FF0000", "r"),
-    new Color("Green", "#008000", "g")
+let colors = [
+    new Color("Yellow", "#FFFF00", "y", 0),
+    new Color("Blue", "#0000FF", "b", 0),
+    new Color("Red", "#FF0000", "r", 0),
+    new Color("Green", "#008000", "g", 0)
 ];
 
 let table = [];
+let moves = [];
 
 let numberOfRows = 0;
 let numberOfColumns = 0;
-let startingRow = 0;
-let startingColumn = 0;
 let gameColor;
 let actionTableBuilt = false;
+let moveCounter = 0;
+let cellCount = 0;
+let winnerAnimating = false;
 
 document.getElementById('playButton').addEventListener('click', function () {
+    winnerAnimating = false;
     table = [];
     document.getElementById("table").innerHTML = "";
 
@@ -29,16 +32,20 @@ document.getElementById('playButton').addEventListener('click', function () {
     if (!actionTableBuilt)
         buildActionTable();
 
-    startingRow = 0;
-    startingColumn = 1;
     gameColor = table[0][0];
+    cellCount = numberOfRows * numberOfColumns;
+    moves.push(cloneTable());
 });
 
 function buildTable() {
+    moveCounter = 0;
+
     for (let r = 0; r < numberOfRows; r++) {
         let columns = [];
         for (let c = 0; c < numberOfColumns; c++) {
-            columns[c] = getRandomColor();
+            var randomColor = getRandomColor();
+            columns[c] = randomColor;
+            randomColor.usedCount++;
         }
 
         table[r] = columns;
@@ -61,18 +68,23 @@ function buildActionTable() {
     actionTableBuilt = true;
 }
 
-function displayTable() {
+function displayTable(board) {
+    if (board === undefined)
+        board = table;
+
     let gameBoard = document.getElementById("table");
     gameBoard.innerHTML = "";
-    
-    for (let r = 0; r < table.length; r++) {
+
+    for (let r = 0; r < board.length; r++) {
         const gameRow = createRow();
 
-        for (let c = 0; c < table[r].length; c++)
-            gameRow.appendChild(createColoredCell(table[r][c].hexValue));
+        for (let c = 0; c < board[r].length; c++)
+            gameRow.appendChild(createColoredCell(board[r][c].hexValue));
 
         gameBoard.appendChild(gameRow);
     }
+
+    document.getElementById("numberOfMoves").innerHTML = moveCounter;
 }
 
 function getRandomColor() {
@@ -88,18 +100,28 @@ function doMove(selectedColor) {
         return;
 
     floodFill(0, 0, gameColor, selectedColor);
+
+    if (isBoardFilled()) {
+        winnerAnimation();
+        console.log("WINNER")
+    }
+
     gameColor = selectedColor;
 
+    moveCounter++;
+    moves.push(cloneTable());
     displayTable();
 }
 
 function floodFill(row, col, targetColor, replacementColor) {
-    if (row < 0 || row >= numberOfRows || col < 0 || col >= numberOfColumns) 
+    if (row < 0 || row >= numberOfRows || col < 0 || col >= numberOfColumns)
         return;
 
-    if (table[row][col] !== targetColor)
+    if (table[row][col] !== targetColor || table[row][col] === replacementColor)
         return;
 
+    targetColor.usedCount--;
+    replacementColor.usedCount++;
     table[row][col] = replacementColor;
 
     // Recursively call floodFill on all adjacent cells (up, down, left, right)
@@ -107,8 +129,24 @@ function floodFill(row, col, targetColor, replacementColor) {
     floodFill(row - 1, col, targetColor, replacementColor);  // Up
     floodFill(row, col + 1, targetColor, replacementColor);  // Right
     floodFill(row, col - 1, targetColor, replacementColor);  // Left
+
+    return;
 }
 
+function isBoardFilled() {
+    for (let c = 0; c < colors.length; c++) {
+        if (colors[c].usedCount === 0)
+            continue;
+
+        if (colors[c].usedCount < cellCount)
+            return false;
+
+        if (colors[c].usedCount == cellCount)
+            return true;
+
+        return false;
+    }
+}
 
 function createRow() {
     const row = document.createElement("div");
@@ -123,4 +161,52 @@ function createColoredCell(backgroundColor) {
     colorDiv.style.backgroundColor = backgroundColor;
 
     return colorDiv;
+}
+
+function cloneTable() {
+    return table.map(row => row.map(color => color.clone()));
+}
+
+async function winnerAnimation() {
+    winnerAnimating = true;
+    while (winnerAnimating) {
+        await rewindBoard(winnerAnimating); // Run rewind
+        if (!winnerAnimating) {
+            break;  // Exit if animation stopped
+        }
+
+        await delay(150); // Small delay before playing
+
+        console.log("play");
+        await playBoard(winnerAnimating); // Run play
+
+        if (!winnerAnimating) {
+            console.log("Animation stopped after play");
+            break;  // Exit if animation stopped
+        }
+    }
+}
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function rewindBoard(winnerAnimating) {
+    for (let m = moves.length - 1; m >= 0; m--) {
+        if (!winnerAnimating) 
+            return;
+
+        displayTable(moves[m]);
+        await delay(400);
+    }
+}
+
+async function playBoard(winnerAnimating) {
+    for (let m = 0; m < moves.length; m++) {
+        if (!winnerAnimating) 
+            return;
+
+        displayTable(moves[m]);
+        await delay(400);
+    }
 }

@@ -3,7 +3,6 @@
 
 <head>
     <title>Pixelated</title>
-
     <style>
         .cell {
             width: 25px;
@@ -37,12 +36,12 @@
         How many rows do you want? <input type="number" id="numberOfRows"> <br />
         How many columns do you want? <input type="number" id="numberOfColumns"> <br />
         <button id="playButton">Play</button>
-        <p>
-            <div class="flex-table">
-                <div class="flex-row" id="actionTable">
-                </div>
+        <div class="flex-table">
+            <div class="flex-row" id="actionTable">
             </div>
-        </p>
+        </div>
+        <br /><br />
+        Number of Moves: <span id="numberOfMoves"></span>
     </section>
 
     <section>
