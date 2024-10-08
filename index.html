@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixelated</title>
-    <style>
-        .cell {
-            width: 25px;
-            height: 25px;
-        }
-
-        .flex-table {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .flex-row {
-            display: flex;
-        }
-
-        .flex-cell {
-            width: 25px;
-            height: 25px;
-            padding: 0;
-            line-height: 25px;
-        }
-    </style>
+    <head>
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/layout.css">
+        <link rel="stylesheet" href="styles/header.css">
+        <link rel="stylesheet" href="styles/footer.css">
+        <link rel="stylesheet" href="styles/game.css">
+        <link rel="stylesheet" href="styles/action.css">
+        <link rel="stylesheet" href="styles/responsive.css">
+    </head>
+    
 </head>
 
 <body>
-    <header>
-        <h1>Pixelated</h1>
-    </header>
+    <div class="game-container">
+        <header>
+            <h1>Pixelated</h1>
+        </header>
 
-    <section>
-        How many rows do you want? <input type="number" id="numberOfRows"> <br />
-        How many columns do you want? <input type="number" id="numberOfColumns"> <br />
-        <button id="playButton">Play</button>
-        <div class="flex-table">
-            <div class="flex-row" id="actionTable">
+        <section>
+            <div>
+                <label for="numberOfRows">How many rows do you want?</label><br />
+                <input type="number" id="numberOfRows" min="1" max="20">
             </div>
-        </div>
-        <br /><br />
-        Number of Moves: <span id="numberOfMoves"></span>
-    </section>
+            <div>
+                <label for="numberOfColumns">How many columns do you want?</label><br />
+                <input type="number" id="numberOfColumns" min="1" max="20">
+            </div>
+            <button id="playButton">Play</button>
+            <!-- Action table section -->
+            <div class="action-table" id="actionTable"></div>
+            <div id="numberOfMoves">Number of Moves: <span id="moveCount"></span></div>
+        </section>
 
-    <section>
-        <div class="flex-table" id="table">
+        <!-- Game board section -->
+        <section class="game-board" id="table"></section>
+    </div>
 
-        </div>
-    </section>
+    <footer>
+        <p>Game by Johnie Karr</p>
+    </footer>
 
     <script src="./src/pixelated.js" type="module"></script>
 </body>

@@ -56,7 +56,7 @@ function buildActionTable() {
     let actionTable = document.getElementById("actionTable");
 
     for (let c = 0; c < colors.length; c++) {
-        const colorDiv = createColoredCell(colors[c].hexValue);
+        const colorDiv = createColoredCell(colors[c].hexValue, 'action-cell');
 
         colorDiv.addEventListener('click', function () {
             doMove(colors[c]);
@@ -75,11 +75,13 @@ function displayTable(board) {
     let gameBoard = document.getElementById("table");
     gameBoard.innerHTML = "";
 
+    gameBoard.style.gridTemplateColumns = `repeat(${numberOfColumns}, 25px)`;
+
     for (let r = 0; r < board.length; r++) {
         const gameRow = createRow();
 
         for (let c = 0; c < board[r].length; c++)
-            gameRow.appendChild(createColoredCell(board[r][c].hexValue));
+            gameRow.appendChild(createColoredCell(board[r][c].hexValue, 'game-cell'));
 
         gameBoard.appendChild(gameRow);
     }
@@ -155,9 +157,9 @@ function createRow() {
     return row;
 }
 
-function createColoredCell(backgroundColor) {
+function createColoredCell(backgroundColor, className) {
     const colorDiv = document.createElement("div");
-    colorDiv.className = 'flex-cell';
+    colorDiv.className = className;
     colorDiv.style.backgroundColor = backgroundColor;
 
     return colorDiv;
