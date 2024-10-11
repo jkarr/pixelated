@@ -20,11 +20,12 @@ let winnerAnimating = false;
 
 document.getElementById('playButton').addEventListener('click', function () {
     winnerAnimating = false;
+    moves = [];
     table = [];
     document.getElementById("table").innerHTML = "";
 
-    numberOfRows = document.getElementById('numberOfRows').value;
-    numberOfColumns = document.getElementById('numberOfColumns').value;
+    numberOfRows = document.getElementById('boardSize').value;
+    numberOfColumns = document.getElementById('boardSize').value;
 
     buildTable();
     displayTable();
@@ -86,7 +87,7 @@ function displayTable(board) {
         gameBoard.appendChild(gameRow);
     }
 
-    document.getElementById("numberOfMoves").innerHTML = moveCounter;
+    document.getElementById("moveCount").innerHTML = moveCounter;
 }
 
 function getRandomColor() {
@@ -103,10 +104,8 @@ function doMove(selectedColor) {
 
     floodFill(0, 0, gameColor, selectedColor);
 
-    if (isBoardFilled()) {
+    if (isBoardFilled())
         winnerAnimation();
-        console.log("WINNER")
-    }
 
     gameColor = selectedColor;
 
@@ -177,15 +176,10 @@ async function winnerAnimation() {
             break;  // Exit if animation stopped
         }
 
-        await delay(150); // Small delay before playing
-
-        console.log("play");
         await playBoard(winnerAnimating); // Run play
 
-        if (!winnerAnimating) {
-            console.log("Animation stopped after play");
+        if (!winnerAnimating)
             break;  // Exit if animation stopped
-        }
     }
 }
 
@@ -199,7 +193,7 @@ async function rewindBoard(winnerAnimating) {
             return;
 
         displayTable(moves[m]);
-        await delay(400);
+        await delay(100);
     }
 }
 
@@ -209,6 +203,6 @@ async function playBoard(winnerAnimating) {
             return;
 
         displayTable(moves[m]);
-        await delay(400);
+        await delay(100);
     }
 }
