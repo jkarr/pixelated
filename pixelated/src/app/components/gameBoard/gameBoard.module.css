@@ -1,11 +1,10 @@
-/* Game board styles */
-.game-board {
+.gameBoard {
     display: grid;
     gap: 0px; /* No gap between cells */
     margin-top: 20px;
 }
 
-.game-cell {
+.gameCell {
     width: 25px;
     height: 25px;
     padding: 0;

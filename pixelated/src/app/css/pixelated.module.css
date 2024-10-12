@@ -1,4 +1,4 @@
-.game-container {
+.gameContainer {
     flex-grow: 1; /* Ensures it takes the available space */
     display: flex;
     flex-direction: column;
@@ -16,27 +16,4 @@
     font-weight: bold;
     font-size: 1.2rem;
     margin-top: 20px;
-}
-
-input[type="number"] {
-    padding: 8px;
-    margin: 10px 0;
-    width: 100px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #2980b9;
 }

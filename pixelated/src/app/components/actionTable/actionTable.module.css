@@ -1,11 +1,10 @@
-/* Action table styles */
-.action-table {
+.actionTable {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.action-cell {
+.actionCell {
     width: 30px;
     height: 50px; /* Non-square cells for action table */
     margin: 0 5px; /* Spacing between action cells */
@@ -14,6 +13,6 @@
     transition: transform 0.3s ease;
 }
 
-.action-cell:hover {
+.actionCell:hover {
     transform: scale(1.1);
 }
