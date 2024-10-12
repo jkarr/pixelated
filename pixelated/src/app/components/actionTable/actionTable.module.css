@@ -1,0 +1,18 @@
+.actionTable {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.actionCell {
+    width: 30px;
+    height: 50px; /* Non-square cells for action table */
+    margin: 0 5px; /* Spacing between action cells */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.actionCell:hover {
+    transform: scale(1.1);
+}

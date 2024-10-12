@@ -1,0 +1,12 @@
+.gameBoard {
+    display: grid;
+    gap: 0px; /* No gap between cells */
+    margin-top: 20px;
+}
+
+.gameCell {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    line-height: 25px;
+}
