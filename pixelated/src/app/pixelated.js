@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Color from './color.js';
 import ActionTable from './components/actionTable/actionTable.js';
 import GameBoard from './components/gameBoard/gameBoard.js';
@@ -13,70 +13,67 @@ export default function Pixelated() {
     const [showActionTable, setShowActionTable] = useState(false);
     const [showGameBoard, setShowGameBoard] = useState(false);
     const [showMoveCounter, setShowMoveCounter] = useState(false);
-    const [table, setTable] = useState([]);
-    const [numberOfRows, setNumberOfRows] = useState(0);
-    const [numberOfColumns, setNumberOfColumns] = useState(0);
-    const [moves, setMoves] = useState([]); 
+    const [moves, setMoves] = useState([]);
     const [gameBoard, setGameBoard] = useState([]);
     const [gameColor, setGameColor] = useState(new Color("", "", "", 0));
-    const [cellCount, setCellCount] = useState(0)
+    const [cellCount, setCellCount] = useState(0);
+    const [boardSize, setBoardSize] = useState(0);
 
-
-
+    const winnerAnimating = useRef(false);
+    const minimumBoardSize = 2;
+    const maximumBoardSize = 25;
     let actionTableBuilt = false;
-    let winnerAnimating = false;
+    let rewinding = true;
+    let currentMove = 0;
+    let animationInterval;
 
-    useEffect(() => {
-        const playButton = document.getElementById('playButton');
+    const handlePlayClick = () => {
+        winnerAnimating.current = false;
+        clearInterval(animationInterval);
+        Color.initColorCounts();
+        setMoves([]);
+        setGameBoard([]);
 
-        if (playButton) {
-            playButton.addEventListener('click', function () {
-                winnerAnimating = false;
-                Color.initColorCounts();
-                setMoves([]);
-                setTable([]);
-
-                const boardSize = document.getElementById('boardSize').value;
-                setNumberOfColumns(boardSize);
-                setNumberOfRows(boardSize);
-
-                const newTable = buildTable(boardSize, boardSize);
-                setTable(newTable);
-
-                if (!actionTableBuilt)
-                    buildActionTable();
-
-                setGameColor(newTable[0][0]);
-                setCellCount(boardSize * boardSize);
-                setMoves([cloneTable(newTable)]);
-
-                displayTable(newTable);
-                setShowMoveCounter(true);
-            });
+        if (!validateGameSetup()) {
+            return;
         }
 
-        return () => {
-            if (playButton) {
-                playButton.removeEventListener('click', null);
-            }
-        };
-    }, []);
+        const size = document.getElementById('boardSize').value;
+        setBoardSize(size);
+        const newTable = buildTable(size);
 
-    function buildTable(rows, cells) {
+        setGameBoard(newTable);
+        setShowGameBoard(true);
+
+        if (!actionTableBuilt)
+            buildActionTable();
+
+        setGameColor(newTable[0][0]);
+        setCellCount(size * size);
+        setMoves([cloneTable(newTable)]);
+
+        setShowMoveCounter(true);
+    }
+
+    function validateGameSetup() {
+        let size = document.getElementById('boardSize').value;
+
+        return size >= minimumBoardSize && size <= maximumBoardSize;
+    }
+
+    function buildTable(boardSize) {
         const newTable = [];
 
-        for (let r = 0; r < rows; r++) {
+        for (let r = 0; r < boardSize; r++) {
             let columns = [];
-            for (let c = 0; c < cells; c++) {
-                var randomColor = getRandomColor();
+            for (let c = 0; c < boardSize; c++) {
+                var randomColor = Color.getRandomColor();
                 columns[c] = randomColor;
                 Color.increaseColorCount(randomColor.name);
             }
 
             newTable[r] = columns;
         }
-
-        console.log(Color.colors);
 
         return newTable;
     }
@@ -91,19 +88,7 @@ export default function Pixelated() {
         setShowGameBoard(true);
     }
 
-    function getRandomColor() {
-        const array = new Uint32Array(1);
-        window.crypto.getRandomValues(array);
-        let randomIndex = array[0] % Color.colors.length;
-
-        return Color.colors[randomIndex];
-    }
-
     function doMove(selectedColor) {
-        console.log(Color.colors);
-        console.log(selectedColor);
-        console.log(gameColor);
-
         if (selectedColor.name === gameColor.name)
             return;
 
@@ -120,7 +105,7 @@ export default function Pixelated() {
     }
 
     function floodFill(row, col, targetColor, replacementColor) {
-        if (row < 0 || row >= numberOfRows || col < 0 || col >= numberOfColumns)
+        if (row < 0 || row >= boardSize || col < 0 || col >= boardSize)
             return;
 
         if (gameBoard[row][col].name !== targetColor.name || gameBoard[row][col].name === replacementColor.name)
@@ -128,7 +113,6 @@ export default function Pixelated() {
 
         Color.decreaseColorCount(targetColor.name);
         Color.increaseColorCount(replacementColor.name);
-        console.log(Color.colorCounts);
 
         gameBoard[row][col] = replacementColor;
 
@@ -142,7 +126,6 @@ export default function Pixelated() {
     }
 
     function isBoardFilled() {
-        console.log(Color.colors);
         for (let c = 0; c < Color.colors.length; c++) {
             if (Color.colorCounts[Color.colors[c].name] === 0)
                 continue;
@@ -175,43 +158,43 @@ export default function Pixelated() {
         return newTable;
     }
 
-    async function winnerAnimation() {
-        console.log("winner")
-        winnerAnimating = true;
-        while (winnerAnimating) {
-            await rewindBoard(winnerAnimating); // Run rewind
-            if (!winnerAnimating) {
-                break;  // Exit if animation stopped
+    function winnerAnimation() {
+        winnerAnimating.current = true;
+
+        animationInterval = setInterval(() => {
+            if (rewinding) {
+                if (currentMove < 0) {
+                    rewinding = false;
+                    currentMove = 0;
+                } else {
+                    rewindBoardStep();
+                    currentMove--;
+                }
+            } else {
+                if (currentMove >= moves.length) {
+                    rewinding = true;
+                    currentMove = moves.length - 1;
+                } else {
+                    playBoardStep();
+                    currentMove++;
+                }
             }
 
-            await playBoard(winnerAnimating); // Run play
+            if (!winnerAnimating.current) {
+                clearInterval(animationInterval);
+            }
+        }, 100);
+    }
 
-            if (!winnerAnimating)
-                break;  // Exit if animation stopped
+    function rewindBoardStep() {
+        if (currentMove >= 0 && currentMove < moves.length) {
+            displayTable(moves[currentMove]);
         }
     }
 
-    function delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function rewindBoard(winnerAnimating) {
-        for (let m = moves.length - 1; m >= 0; m--) {
-            if (!winnerAnimating)
-                return;
-
-            displayTable(moves[m]);
-            await delay(100);
-        }
-    }
-
-    async function playBoard(winnerAnimating) {
-        for (let m = 0; m < moves.length; m++) {
-            if (!winnerAnimating)
-                return;
-
-            displayTable(moves[m]);
-            await delay(100);
+    function playBoardStep() {
+        if (currentMove >= 0 && currentMove < moves.length) {
+            displayTable(moves[currentMove]);
         }
     }
 
@@ -225,24 +208,21 @@ export default function Pixelated() {
 
                     <section>
                         <div>
-                            <label htmlFor="boardSize">Enter your desired board size (a number from 2 - 25)</label>
-                            <input type="number" id="boardSize" min="2" max="25" />
+                            <label htmlFor="boardSize">Enter your desired board size (a number from {minimumBoardSize} - {maximumBoardSize})</label><br />
+                            <input type="number" id="boardSize" />
+                            <button type="button" id="playButton" onClick={handlePlayClick}>Play</button>
                         </div>
 
-                        <button type="button" id="playButton">Play</button>
                         {showActionTable && <ActionTable onActionClick={doMove} />}
-                        {showMoveCounter && 
-                        <div id="numberOfMoves">Number of Moves: {moves.length - 1}</div>}
+                        {showMoveCounter &&
+                            <div id="numberOfMoves">Number of Moves: {moves.length - 1}</div>}
                     </section>
 
-                    <div>Game Color: {gameColor.name}</div>
-
-                    {showGameBoard && <GameBoard board={gameBoard} 
-                                                numberOfColumns={numberOfColumns} />}
+                    {gameBoard.length > 0 && <GameBoard board={gameBoard}
+                        numberOfColumns={boardSize} />}
                 </div>
 
             </main>
         </div>
     )
 }
-

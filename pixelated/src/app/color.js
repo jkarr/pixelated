@@ -14,6 +14,7 @@ class Color {
         new Color("Blue", "#0000FF", "b"),
         new Color("Red", "#FF0000", "r"),
         new Color("Green", "#008000", "g"),
+        new Color("Purple", "#391492", "p")
     ];
 
     static colorCounts = [];
@@ -23,6 +24,8 @@ class Color {
         for (let c = 0; c < this.colors.length; c++) {
             this.colorCounts[this.colors[c].name] = 0;
         }
+
+        console.log(this.colorCounts);
     }
 
     static increaseColorCount(colorName) {
@@ -31,6 +34,11 @@ class Color {
 
     static decreaseColorCount(colorName) {
         this.colorCounts[colorName]--;
+    }
+
+    static getRandomColor() {
+        let randomIndex = Math.floor(Math.random() * Color.colors.length);
+        return Color.colors[randomIndex];
     }
 }
 
