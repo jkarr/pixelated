@@ -11,15 +11,16 @@ import "./css/page.form.css";
 
 export default function Pixelated() {
     const [showActionTable, setShowActionTable] = useState(false);
-    const [showGameBoard, setShowGameBoard] = useState(false);
     const [showMoveCounter, setShowMoveCounter] = useState(false);
-    const [moves, setMoves] = useState([]);
     const [gameBoard, setGameBoard] = useState([]);
+    const [gameBoard2, setGameBoard2] = useState([]);
     const [gameColor, setGameColor] = useState(new Color("", "", "", 0));
     const [cellCount, setCellCount] = useState(0);
     const [boardSize, setBoardSize] = useState(0);
 
+    const activeGameBoard = useRef(0);
     const winnerAnimating = useRef(false);
+    const moves = useRef([]);
     const minimumBoardSize = 2;
     const maximumBoardSize = 25;
     let actionTableBuilt = false;
@@ -31,8 +32,14 @@ export default function Pixelated() {
         winnerAnimating.current = false;
         clearInterval(animationInterval);
         Color.initColorCounts();
-        setMoves([]);
+        moves.current = [];
         setGameBoard([]);
+        setGameBoard2([]);
+
+        if (activeGameBoard.current === 1)
+            activeGameBoard.current = 2;
+        else
+            activeGameBoard.current = 1;
 
         if (!validateGameSetup()) {
             return;
@@ -42,17 +49,15 @@ export default function Pixelated() {
         setBoardSize(size);
         const newTable = buildTable(size);
 
-        setGameBoard(newTable);
-        setShowGameBoard(true);
-
         if (!actionTableBuilt)
             buildActionTable();
 
         setGameColor(newTable[0][0]);
         setCellCount(size * size);
-        setMoves([cloneTable(newTable)]);
+        moves.current = [cloneTable(newTable)];
 
         setShowMoveCounter(true);
+        displayTable(newTable);
     }
 
     function validateGameSetup() {
@@ -84,8 +89,10 @@ export default function Pixelated() {
     }
 
     function displayTable(board) {
-        setGameBoard(board);
-        setShowGameBoard(true);
+        if (activeGameBoard.current === 1)
+            setGameBoard(board);
+        else
+            setGameBoard2(board);
     }
 
     function doMove(selectedColor) {
@@ -99,22 +106,34 @@ export default function Pixelated() {
 
         setGameColor(selectedColor);
 
-        const clonedTable = cloneTable(gameBoard);
-        moves.push(clonedTable);
-        displayTable(clonedTable);
+        let board = [];
+        if (activeGameBoard.current === 1)
+            board = cloneTable(gameBoard);
+        else
+            board = cloneTable(gameBoard2);
+
+        moves.current.push(board);
+        displayTable(board);
     }
 
     function floodFill(row, col, targetColor, replacementColor) {
         if (row < 0 || row >= boardSize || col < 0 || col >= boardSize)
             return;
 
-        if (gameBoard[row][col].name !== targetColor.name || gameBoard[row][col].name === replacementColor.name)
+        let board = [];
+
+        if (activeGameBoard.current === 1)
+            board = gameBoard;
+        else
+            board = gameBoard2;
+
+        if (board[row][col].name !== targetColor.name || board[row][col].name === replacementColor.name)
             return;
 
         Color.decreaseColorCount(targetColor.name);
         Color.increaseColorCount(replacementColor.name);
 
-        gameBoard[row][col] = replacementColor;
+        board[row][col] = replacementColor;
 
         // Recursively call floodFill on all adjacent cells (up, down, left, right)
         floodFill(row + 1, col, targetColor, replacementColor);  // Down
@@ -171,9 +190,9 @@ export default function Pixelated() {
                     currentMove--;
                 }
             } else {
-                if (currentMove >= moves.length) {
+                if (currentMove >= moves.current.length) {
                     rewinding = true;
-                    currentMove = moves.length - 1;
+                    currentMove = moves.current.length - 1;
                 } else {
                     playBoardStep();
                     currentMove++;
@@ -187,14 +206,14 @@ export default function Pixelated() {
     }
 
     function rewindBoardStep() {
-        if (currentMove >= 0 && currentMove < moves.length) {
-            displayTable(moves[currentMove]);
+        if (currentMove >= 0 && currentMove < moves.current.length) {
+            displayTable(moves.current[currentMove]);
         }
     }
 
     function playBoardStep() {
-        if (currentMove >= 0 && currentMove < moves.length) {
-            displayTable(moves[currentMove]);
+        if (currentMove >= 0 && currentMove < moves.current.length) {
+            displayTable(moves.current[currentMove]);
         }
     }
 
@@ -215,13 +234,15 @@ export default function Pixelated() {
 
                         {showActionTable && <ActionTable onActionClick={doMove} />}
                         {showMoveCounter &&
-                            <div id="numberOfMoves">Number of Moves: {moves.length - 1}</div>}
+                            <div id="numberOfMoves">Number of Moves: {moves.current.length - 1}</div>}
                     </section>
 
-                    {gameBoard.length > 0 && <GameBoard board={gameBoard}
+                    {activeGameBoard.current === 1 && <GameBoard board={gameBoard}
+                        numberOfColumns={boardSize} />}
+
+                    {activeGameBoard.current === 2 && <GameBoard board={gameBoard2}
                         numberOfColumns={boardSize} />}
                 </div>
-
             </main>
         </div>
     )

@@ -24,8 +24,6 @@ class Color {
         for (let c = 0; c < this.colors.length; c++) {
             this.colorCounts[this.colors[c].name] = 0;
         }
-
-        console.log(this.colorCounts);
     }
 
     static increaseColorCount(colorName) {

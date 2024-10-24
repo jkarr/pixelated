@@ -1,7 +1,6 @@
 import styles from "./gameBoard.module.css";
 
 export default function GameBoard({ board, numberOfColumns }) {
-    console.log(`${numberOfColumns}: ${board}`);
     const boardStyle = {
         gridTemplateColumns: `repeat(${numberOfColumns}, 25px)`
     }
