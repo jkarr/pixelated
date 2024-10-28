@@ -12,10 +12,10 @@ export default function GameBoard({ board, numberOfColumns }) {
         for (let c = 0; c < board[r].length; c++) {
             cells.push(
                 <div key={c}
-                    className={styles.gameCell}
-                    style={{
-                        backgroundColor: board[r][c].hexValue
-                    }}></div>
+                     className={styles.gameCell}
+                     style={{
+                         backgroundColor: board[r][c].hexValue
+                     }}></div>
             )
         }
 
@@ -28,8 +28,8 @@ export default function GameBoard({ board, numberOfColumns }) {
 
     return (
         <section style={boardStyle}
-            className={styles.gameBoard}
-            id="table">
+                 className={styles.gameBoard}
+                 id="table">
             {rows}
         </section>
     )
