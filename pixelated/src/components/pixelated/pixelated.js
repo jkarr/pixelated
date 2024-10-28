@@ -1,13 +1,13 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react';
-import Color from './color.js';
-import ActionTable from './components/actionTable/actionTable.js';
-import GameBoard from './components/gameBoard/gameBoard.js';
+import Color from '../../utils/color.js';
+import ActionTable from '../actionTable/actionTable';
+import GameBoard from '../gameBoard/gameBoard.js';
 
-import styles from "./css/page.module.css";
-import game from "./css/pixelated.module.css";
-import "./css/page.form.css";
+import styles from '../../App.css';
+import game from './pixelated.module.css';
+import '../../form.css';
 
 export default function Pixelated() {
     const [showActionTable, setShowActionTable] = useState(false);
@@ -238,10 +238,10 @@ export default function Pixelated() {
                     </section>
 
                     {activeGameBoard.current === 1 && <GameBoard board={gameBoard}
-                        numberOfColumns={boardSize} />}
+                                                                 numberOfColumns={boardSize} />}
 
                     {activeGameBoard.current === 2 && <GameBoard board={gameBoard2}
-                        numberOfColumns={boardSize} />}
+                                                                 numberOfColumns={boardSize} />}
                 </div>
             </main>
         </div>

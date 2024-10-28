@@ -1,5 +1,5 @@
 import styles from "./actionTable.module.css";
-import Color from '../../color.js';
+import Color from "../../utils/color";
 
 export default function ActionTable({ onActionClick }) {
     const divs = [];
@@ -22,4 +22,4 @@ export default function ActionTable({ onActionClick }) {
             {divs}
         </div>
     )
-}
+};
