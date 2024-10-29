@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import Color from '../../utils/color.js';
 import ActionTable from '../actionTable/actionTable';
 import GameBoard from '../gameBoard/gameBoard.js';
@@ -152,7 +152,7 @@ export default function Pixelated() {
             if (Color.colorCounts[Color.colors[c].name] < cellCount)
                 return false;
 
-            if (Color.colorCounts[Color.colors[c].name] == cellCount)
+            if (Color.colorCounts[Color.colors[c].name] === cellCount)
                 return true;
 
             return false;
