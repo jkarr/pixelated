@@ -1,14 +1,16 @@
-import Pixelated from './components/pixelated/pixelated';
 import './App.css';
+import Navbar from './components/navbar/navbar.js';
+import HowToPlay from './pages/HowToPlay.js';
 
 function App() {
   return (
-      <><Pixelated />
+    <>
+      <Navbar />
 
-        <footer>
-          <p>Game by Johnie J. Karr</p>
-        </footer>
-      </>
+      <HowToPlay />
+
+      
+    </>
   );
 }
 

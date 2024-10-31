@@ -223,6 +223,7 @@ export default function Pixelated() {
                 <div className={game.gameContainer}>
                     <header>
                         <h1>Pixelated</h1>
+                        This game is dedicated to my wife, Amy.
                     </header>
 
                     <section>
