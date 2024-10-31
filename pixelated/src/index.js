@@ -3,11 +3,29 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {  createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Play } from './pages/Play.js'
+//import HowToPlay from './pages/HowToPlay.js';
+//import Pixelated from './components/pixelated/pixelated.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />
+  },
+  {
+    path: '/play',
+    element: <Play />
+  }
+]);
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
+
+    <footer>
+      <p>Game by Johnie J. Karr</p>
+    </footer>
   </React.StrictMode>
 );
 
