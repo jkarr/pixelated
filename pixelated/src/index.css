@@ -1,68 +1,97 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 16px;
+  /* Apply padding to avoid sticking too close to the edges */
+}
+
+nav>ul>li {
+  list-style: none;
+}
+
+main {
+  display: contents;
+}
+
+/* Main Content and Footer */
+.main {
+  flex: 1;
+  /* Allows it to grow and take available space */
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+footer {
+  padding: 10px;
+  text-align: center;
+  background-color: #eee;
+}
+
+
+/* Footer sticky */
+footer {
+  width: 100vw;
+  padding: 10px 0;
+  background-color: #eee;
+  text-align: center;
+  color: #333;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .page {
+    padding: 16px;
+  }
+
+  .main {
+    align-items: center;
+    text-align: center;
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .ctas a {
+    font-size: 14px;
+    height: 40px;
+    padding: 0 16px;
+  }
+}
+
+/* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  background-color: #f4f4f9;
-  color: #333;
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  justify-content: space-between;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-footer {
-  width: 100vw;
-  padding: 10px 0;
-  text-align: center;
-  background-color: #eee;
-  position: relative;
-  bottom: 0;
-}
-
-header {
-  margin-bottom: 20px;
-}
-
-h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  footer {
+    background-color: #1a1a1a;
+    color: #ccc;
   }
 }

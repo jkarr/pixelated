@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {  createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Play } from './pages/Play.js'
+import  Play from './pages/Play.js'
 //import HowToPlay from './pages/HowToPlay.js';
 //import Pixelated from './components/pixelated/pixelated.js';
 
@@ -22,9 +22,9 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
-
     <footer>
-      <p>Game by Johnie J. Karr</p>
+      <p>Game by Johnie J. Karr <br />
+      Dedicated to my wife, Amy</p>
     </footer>
   </React.StrictMode>
 );

@@ -1,5 +1,5 @@
-.gameContainer {
-    flex-grow: 1; /* Ensures it takes the available space */
+/* .gameContainer {
+    flex-grow: 1; /* Ensures it takes the available space 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,7 +8,17 @@
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    /* width: 100%;
+} */
+
+.gameContainer {
+    max-width: 650px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 20px;
+    align-self: center;
 }
 
 #numberOfMoves  {
