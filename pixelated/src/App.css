@@ -27,15 +27,15 @@
   }
 }
 
-.main {
+/* .main {
   display: flex;
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
-}
+} 
 
-.main ol {
-  /*font-family: var(--font-geist-mono);*/
+/* .main ol {
+  /*font-family: var(--font-geist-mono);
   padding-left: 0;
   margin: 0;
   font-size: 14px;
@@ -54,7 +54,7 @@
   padding: 2px 4px;
   border-radius: 4px;
   font-weight: 600;
-}
+} */
 
 .ctas {
   display: flex;
@@ -113,13 +113,13 @@ a.secondary {
     padding-bottom: 80px;
   }
 
-  .main {
+  /* .main {
     align-items: center;
   }
 
   .main ol {
     text-align: center;
-  }
+  } */
 
   .ctas {
     flex-direction: column;

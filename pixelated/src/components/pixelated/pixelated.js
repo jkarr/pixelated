@@ -7,7 +7,7 @@ import GameBoard from '../gameBoard/gameBoard.js';
 
 import styles from '../../App.css';
 import game from './pixelated.module.css';
-import '../../form.css';
+import '../../styles/form.css';
 
 export default function Pixelated() {
     const [showActionTable, setShowActionTable] = useState(false);
@@ -218,33 +218,30 @@ export default function Pixelated() {
     }
 
     return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                <div className={game.gameContainer}>
-                    <header>
-                        <h1>Pixelated</h1>
-                        This game is dedicated to my wife, Amy.
-                    </header>
+        <main className={styles.main}>
+            <div className={game.gameContainer}>
+                <header>
+                    <h1>Pixelated</h1>
+                </header>
 
-                    <section>
-                        <div>
-                            <label htmlFor="boardSize">Enter your desired board size (a number from {minimumBoardSize} - {maximumBoardSize})</label><br />
-                            <input type="number" id="boardSize" />
-                            <button type="button" id="playButton" onClick={handlePlayClick}>Play</button>
-                        </div>
+                <section>
+                    <div>
+                        <label htmlFor="boardSize">Enter your desired board size (a number from {minimumBoardSize} - {maximumBoardSize})</label><br />
+                        <input type="number" id="boardSize" />
+                        <button type="button" id="playButton" onClick={handlePlayClick}>Play</button>
+                    </div>
 
-                        {showActionTable && <ActionTable onActionClick={doMove} />}
-                        {showMoveCounter &&
-                            <div id="numberOfMoves">Number of Moves: {moves.current.length - 1}</div>}
-                    </section>
+                    {showActionTable && <ActionTable onActionClick={doMove} />}
+                    {showMoveCounter &&
+                        <div id="numberOfMoves">Number of Moves: {moves.current.length - 1}</div>}
+                </section>
 
-                    {activeGameBoard.current === 1 && <GameBoard board={gameBoard}
-                                                                 numberOfColumns={boardSize} />}
+                {activeGameBoard.current === 1 && <GameBoard board={gameBoard}
+                    numberOfColumns={boardSize} />}
 
-                    {activeGameBoard.current === 2 && <GameBoard board={gameBoard2}
-                                                                 numberOfColumns={boardSize} />}
-                </div>
-            </main>
-        </div>
+                {activeGameBoard.current === 2 && <GameBoard board={gameBoard2}
+                    numberOfColumns={boardSize} />}
+            </div>
+        </main>
     )
 }

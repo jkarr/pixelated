@@ -1,53 +1,43 @@
 import { Link } from 'react-router-dom';
+import '../styles/buttonLink.css';
+import '../styles/howToPlay.css';
 
 function HowToPlay() {
     return (
         <>
             <hr />
-            <section id="how-to-play">
-                <h2>How to Play <em>Pixelated</em></h2>
+            <main>
+                <div id="how-to-play" class="how-to-play-container">
+                    <header>
+                        <h1 class="how-to-play-title">How to Play <em>Pixelated</em></h1>
+                    </header>
 
-                <p><strong>Objective:</strong><br />
-                    Fill the entire board with a single color to win!</p>
-                <br /><br />
-
-                <h3>Setup:</h3>
-                <p>At the start of each game, the board is randomly filled with colored cells.</p>
-                <br /><br />
-
-                <h3>Game Mechanics:</h3>
-                <ol>
-                    <li><strong>Board Layout:</strong><br />
-                        The game board consists of a grid of cells, each filled with a random color.
-                        Your goal is to change the color of the entire board until all cells match.
-                    </li>
-                    <li><strong>Making Moves:</strong><br />
-                        Select a color from the action panel located below the board.
-                        When you select a color, all the cells adjacent to the top-left corner of the board (starting point)
-                        that match the current top-left cell’s color will change to your chosen color.
-                        The colored area grows with each move as you continue matching adjacent cells.
-                    </li>
-                    <li><strong>Winning the Game:</strong><br />
-                        You win once every cell on the board is filled with the same color.
-                        Keep an eye on your moves and try to complete the board in as few steps as possible!
-                    </li>
-                </ol>
-                <br /><br />
-
-                <h3>Strategy Tips:</h3>
-                <ul>
-                    <li>Plan your moves ahead and look for ways to expand the colored area with fewer moves.</li>
-                    <li>Larger clusters of the same color can help you clear the board faster.</li>
-                </ul>
-
-                <p>Enjoy your game and try to beat your own best score!</p>
-                <br /><br /><br /><br />
-                <nav>
-                    <ul>
-                        <li><Link to="/play">Play Game</Link></li>
+                    <ul class="steps-container">
+                        <li class="step">
+                            <h3>Step 1: Start the Game</h3>
+                            <p>Click the "Play" button to start a new game. The game board will be filled with random colors.</p>
+                        </li>
+                        <li class="step">
+                            <h3>Step 2: Select a Color</h3>
+                            <p>Choose a color to flood-fill starting from the top-left cell. This will change the connected cells to the selected color.</p>
+                        </li>
+                        <li class="step">
+                            <h3>Step 3: Fill the Board</h3>
+                            <p>Continue selecting colors until the entire board is filled with a single color. The game is won when all cells match.</p>
+                        </li>
+                        <li class="step">
+                            <h3>Step 4: Enjoy your game</h3>
+                            <p>Enjoy your game and try to beat your own best score!</p>
+                        </li>
                     </ul>
-                </nav>
-            </section>
+
+                    <nav>
+                        <ul>
+                            <li><Link to="/play" className="button-link">Play Game</Link></li>
+                        </ul>
+                    </nav>
+                </div>
+            </main>
         </>
     )
 }
