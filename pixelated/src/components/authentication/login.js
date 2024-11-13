@@ -71,7 +71,7 @@ const Login = () => {
                             <div className="content">
                                 <div className="pass-link">
                                     <br /><br />
-                                    <a href="#">Forgot password?</a>
+                                    Forgot Password? (Feature coming soon)
                                 </div>
                             </div>
                             <div className="field">
