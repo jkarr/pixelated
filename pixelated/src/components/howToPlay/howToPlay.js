@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
-import '../styles/buttonLink.css';
-import '../styles/howToPlay.css';
+import Navbar from '../navbar/navbar';
+import '../../styles/buttonLink.css';
+import './howToPlay.css';
 
 function HowToPlay() {
     return (
         <>
+            <Navbar />
             <hr />
             <main>
-                <div id="how-to-play" class="how-to-play-container">
+                <div id="how-to-play" class="main-container">
                     <header>
                         <h1 class="how-to-play-title">How to Play <em>Pixelated</em></h1>
                     </header>

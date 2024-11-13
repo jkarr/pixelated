@@ -6,8 +6,8 @@ import ActionTable from '../actionTable/actionTable';
 import GameBoard from '../gameBoard/gameBoard.js';
 
 import styles from '../../App.css';
-import game from './pixelated.module.css';
 import '../../styles/form.css';
+import pixelatedStyles from './pixelated.module.css'
 
 export default function Pixelated() {
     const [showActionTable, setShowActionTable] = useState(false);
@@ -17,6 +17,7 @@ export default function Pixelated() {
     const [gameColor, setGameColor] = useState(new Color("", "", "", 0));
     const [cellCount, setCellCount] = useState(0);
     const [boardSize, setBoardSize] = useState(0);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const activeGameBoard = useRef(0);
     const winnerAnimating = useRef(false);
@@ -35,6 +36,7 @@ export default function Pixelated() {
         moves.current = [];
         setGameBoard([]);
         setGameBoard2([]);
+        setErrorMessage('');
 
         if (activeGameBoard.current === 1)
             activeGameBoard.current = 2;
@@ -62,8 +64,13 @@ export default function Pixelated() {
 
     function validateGameSetup() {
         let size = document.getElementById('boardSize').value;
+        
+        if (size < minimumBoardSize && size > maximumBoardSize) {
+            setErrorMessage('Board size should be between 5 and 25.');
+            return false;      
+        }
 
-        return size >= minimumBoardSize && size <= maximumBoardSize;
+        return true;
     }
 
     function buildTable(boardSize) {
@@ -219,7 +226,7 @@ export default function Pixelated() {
 
     return (
         <main className={styles.main}>
-            <div className={game.gameContainer}>
+            <div className="main-container">
                 <header>
                     <h1>Pixelated</h1>
                 </header>
@@ -231,9 +238,15 @@ export default function Pixelated() {
                         <button type="button" id="playButton" onClick={handlePlayClick}>Play</button>
                     </div>
 
+                    <div className="errorMessageContainer">
+                        {errorMessage && (
+                            <div className="errorMessage" id="errorMessage">{errorMessage}</div>
+                        )}
+                    </div>
+
                     {showActionTable && <ActionTable onActionClick={doMove} />}
                     {showMoveCounter &&
-                        <div id="numberOfMoves">Number of Moves: {moves.current.length - 1}</div>}
+                        <div id="numberOfMoves" className={pixelatedStyles.numberOfMoves}>Number of Moves: {moves.current.length - 1}</div>}
                 </section>
 
                 {activeGameBoard.current === 1 && <GameBoard board={gameBoard}

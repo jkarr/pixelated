@@ -28,6 +28,17 @@ main {
   display: contents;
 }
 
+/* Main Container */
+.main-container {
+  max-width: 650px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 20px;
+  align-self: center;
+}
+
 /* Main Content and Footer */
 .main {
   flex: 1;
