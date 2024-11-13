@@ -10,11 +10,12 @@ class Color {
     }
 
     static colors = [
-        new Color("Yellow", "#FFFF00", "y"),
-        new Color("Blue", "#0000FF", "b"),
-        new Color("Red", "#FF0000", "r"),
-        new Color("Green", "#008000", "g"),
-        new Color("Purple", "#391492", "p")
+        new Color("Gray", "#708090", "g"),
+        new Color("Blue", "#005AB5", "b"),
+        new Color("Red", "#D73027", "r"),
+        new Color("Green", "#33A02C", "g"),
+        new Color("Purple", "#6A3D9A", "p"),
+        new Color("Orange", "#E69F00", "o")
     ];
 
     static colorCounts = [];

@@ -1,24 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {  createBrowserRouter, RouterProvider } from 'react-router-dom';
-import  Play from './pages/Play.js'
-//import HowToPlay from './pages/HowToPlay.js';
-//import Pixelated from './components/pixelated/pixelated.js';
+import routes from './routes'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />
-  },
-  {
-    path: '/play',
-    element: <Play />
-  }
-]);
+const router = createBrowserRouter(routes);
+
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />

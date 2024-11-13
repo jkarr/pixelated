@@ -10,17 +10,6 @@ body {
     background-color: #f5f5f5;
 }
 
-/* Container for the How to Play section */
-.how-to-play-container {
-    max-width: 650px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    margin: 20px;
-    align-self: center;
-}
-
 /* Title styling */
 .how-to-play-title {
     font-size: 28px;

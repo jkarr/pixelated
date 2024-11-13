@@ -2,6 +2,7 @@
     display: grid;
     gap: 0px; /* No gap between cells */
     margin-top: 20px;
+    justify-content: center;
 }
 
 .gameCell {

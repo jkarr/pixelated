@@ -1,15 +1,10 @@
 import './App.css';
-import Navbar from './components/navbar/navbar.js';
-import HowToPlay from './pages/HowToPlay.js';
+import HowToPlay from './components/howToPlay/howToPlay.js';
 
 function App() {
   return (
     <>
-      <Navbar />
-
-      <HowToPlay />
-
-      
+    <HowToPlay />
     </>
   );
 }
