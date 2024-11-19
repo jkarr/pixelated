@@ -1,4 +1,9 @@
 {
-    "routes": []
+    "routes": [
+      {
+        "route": "/login",
+        "rewrite": "/index.html"
+      }
+    ]
   }
   
