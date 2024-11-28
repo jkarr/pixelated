@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Color from '../../utils/color.js';
 import ActionTable from '../actionTable/actionTable';
 import GameBoard from '../gameBoard/gameBoard.js';
@@ -12,6 +12,9 @@ import pixelatedStyles from './pixelated.module.css'
 export default function Pixelated() {
     const [showActionTable, setShowActionTable] = useState(false);
     const [showMoveCounter, setShowMoveCounter] = useState(false);
+    const [showMaxMoves, setShowMaxMoves] = useState(false);
+    const [maxMoves, setMaxMoves] = useState(0);
+    const [difficulty, setDifficulty] = useState('easy');
     const [gameBoard, setGameBoard] = useState([]);
     const [gameBoard2, setGameBoard2] = useState([]);
     const [gameColor, setGameColor] = useState(new Color("", "", "", 0));
@@ -22,12 +25,27 @@ export default function Pixelated() {
     const activeGameBoard = useRef(0);
     const winnerAnimating = useRef(false);
     const moves = useRef([]);
-    const minimumBoardSize = 2;
+    const minimumBoardSize = 5;
     const maximumBoardSize = 25;
     let actionTableBuilt = false;
     let rewinding = true;
     let currentMove = 0;
     let animationInterval;
+
+    const handleEasyClick = () => {
+        setDifficulty('easy');
+        handlePlayClick();
+    }
+
+    const handleMediumClick = () => {
+        setDifficulty('medium');
+        handlePlayClick();
+    }
+
+    const handleHardClick = () => {
+        setDifficulty('hard');
+        handlePlayClick();
+    }
 
     const handlePlayClick = () => {
         winnerAnimating.current = false;
@@ -37,15 +55,15 @@ export default function Pixelated() {
         setGameBoard([]);
         setGameBoard2([]);
         setErrorMessage('');
+        // setMaxMoves(0);
 
         if (activeGameBoard.current === 1)
             activeGameBoard.current = 2;
         else
             activeGameBoard.current = 1;
 
-        if (!validateGameSetup()) {
+        if (!validateGameSetup())
             return;
-        }
 
         const size = document.getElementById('boardSize').value;
         setBoardSize(size);
@@ -59,15 +77,33 @@ export default function Pixelated() {
         moves.current = [cloneTable(newTable)];
 
         setShowMoveCounter(true);
+        setShowMaxMoves(true);
         displayTable(newTable);
     }
 
+    // Calculate max moves when the board size or difficulty changes
+    useEffect(() => {
+        const difficultyMaxMultiplier = {
+            easy: 2.2,
+            medium: 1.9,
+            hard: 1.5
+        };
+
+        if (boardSize > 0 && difficulty)
+                setMaxMoves(calculateMaxMoves(boardSize));
+
+        function calculateMaxMoves(boardSize) {
+            const boardSizeFactor = Math.ceil(Math.log2(boardSize));
+            return Math.round(boardSize * difficultyMaxMultiplier[difficulty]) + boardSizeFactor;
+        }
+    }, [boardSize, difficulty]);
+
     function validateGameSetup() {
         let size = document.getElementById('boardSize').value;
-        
-        if (size < minimumBoardSize && size > maximumBoardSize) {
+
+        if (size < minimumBoardSize || size > maximumBoardSize) {
             setErrorMessage('Board size should be between 5 and 25.');
-            return false;      
+            return false;
         }
 
         return true;
@@ -159,10 +195,7 @@ export default function Pixelated() {
             if (Color.colorCounts[Color.colors[c].name] < cellCount)
                 return false;
 
-            if (Color.colorCounts[Color.colors[c].name] === cellCount)
-                return true;
-
-            return false;
+            return Color.colorCounts[Color.colors[c].name] === cellCount;
         }
     }
 
@@ -233,9 +266,13 @@ export default function Pixelated() {
 
                 <section>
                     <div>
-                        <label htmlFor="boardSize">Enter your desired board size (a number from {minimumBoardSize} - {maximumBoardSize})</label><br />
-                        <input type="number" id="boardSize" />
-                        <button type="button" id="playButton" onClick={handlePlayClick}>Play</button>
+                        <label htmlFor="boardSize">Enter your desired board size (a number
+                            from {minimumBoardSize} - {maximumBoardSize})</label><br/>
+                        <input type="number" id="boardSize"/> &nbsp;
+                        <button type="button" id="easyButton" onClick={handleEasyClick}>Easy</button>&nbsp;
+                        <button type="button" id="mediumButton" onClick={handleMediumClick}>Medium</button>&nbsp;
+                        <button type="button" id="hardButton" onClick={handleHardClick}>Hard</button>&nbsp;
+                        {/*<button type="button" id="playButton" onClick={handlePlayClick}>Play</button>*/}
                     </div>
 
                     <div className="errorMessageContainer">
@@ -244,16 +281,21 @@ export default function Pixelated() {
                         )}
                     </div>
 
-                    {showActionTable && <ActionTable onActionClick={doMove} />}
-                    {showMoveCounter &&
-                        <div id="numberOfMoves" className={pixelatedStyles.numberOfMoves}>Number of Moves: {moves.current.length - 1}</div>}
+                    {showActionTable && <ActionTable onActionClick={doMove}/>}
+
+                    {showMaxMoves && showMoveCounter && (
+                        <div className={pixelatedStyles.moveCounterContainer}>
+                            <div id="maxMoves" className={pixelatedStyles.numberOfMoves}>Max Moves: {maxMoves}</div>
+                            <div id="numberOfMoves" className={pixelatedStyles.numberOfMoves}>Number of Moves: {moves.current.length - 1}</div>
+                        </div>
+                    )}
                 </section>
 
                 {activeGameBoard.current === 1 && <GameBoard board={gameBoard}
-                    numberOfColumns={boardSize} />}
+                                                             numberOfColumns={boardSize}/>}
 
                 {activeGameBoard.current === 2 && <GameBoard board={gameBoard2}
-                    numberOfColumns={boardSize} />}
+                                                             numberOfColumns={boardSize}/>}
             </div>
         </main>
     )

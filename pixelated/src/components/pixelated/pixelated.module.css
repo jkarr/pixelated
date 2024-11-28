@@ -1,3 +1,10 @@
+.moveCounterContainer {
+    display: flex;
+    justify-content: flex-start; /* Align to the left */
+    gap: 10px; /* Adds space between the two elements */
+    align-items: center; /* Vertically center the elements */
+}
+
 .numberOfMoves  {
     font-weight: bold;
     font-size: 1.2rem;
