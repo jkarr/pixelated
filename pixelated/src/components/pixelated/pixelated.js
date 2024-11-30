@@ -6,7 +6,6 @@ import ActionTable from '../actionTable/actionTable';
 import GameBoard from '../gameBoard/gameBoard.js';
 import { useUserSession } from '../../utils/userSession.js'
 
-import styles from '../../App.css';
 import '../../styles/form.css';
 import pixelatedStyles from './pixelated.module.css'
 import axios from "axios";
