@@ -81,7 +81,7 @@ const Register = () => {
         }
 
         return 0;
-    };
+    }
 
     return (
         <>
