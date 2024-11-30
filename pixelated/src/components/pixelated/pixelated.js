@@ -117,6 +117,8 @@ export default function Pixelated() {
 
          if ((moves.current.length - 1) === maxMoves)
              setGameLost(true);
+         else
+             setGameLost(false);
 
     }, [boardSize, difficulty, maxMoves, moves.current.length]);
 
