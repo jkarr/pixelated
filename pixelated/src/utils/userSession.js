@@ -13,9 +13,16 @@ export function useUserSession() {
         return currentTime < expiresTime;
     };
 
+    const sessionId = () => {
+        if (!keyExists())
+            return "";
+
+        return userSession.token;
+    }
+
     const signOut = () => {
         deleteKey();
     }
 
-    return { userSession, setUserSession, isLoggedIn, signOut };
+    return { userSession, setUserSession, isLoggedIn, sessionId, signOut };
 }

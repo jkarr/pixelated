@@ -31,6 +31,7 @@ const Login = () => {
 
         axios.post(`${process.env.REACT_APP_REGISTER_USER_API}/Authenticate`, formData)
             .then(function (response) {
+                console.log(response.data);
                 setUserSession(response.data);
                 navigate('/play');
             })
@@ -50,6 +51,19 @@ const Login = () => {
                     setErrorMessage("There was a problem reaching the server. Please try again later.");
                 }
             });
+    };
+
+    const handleGuest = () => {
+      const now = new Date();
+      now.setHours(now.getHours() + 1);
+
+        const guestSession = {
+          "token": "guestToken",
+          "expires": now
+      };
+
+      setUserSession(guestSession);
+      navigate('/play');
     };
 
     return (
@@ -76,6 +90,9 @@ const Login = () => {
                             </div>
                             <div className="field">
                                 <input type="submit" value="Login" />
+                            </div>
+                            <div className="field">
+                                <input type="button" value="Continue as Guest" onClick={handleGuest} />
                             </div>
                             <div className="signup-link">
                                 Not a member? <NavLink to="/register" className="nav-link">Signup Now For Free!</NavLink>
