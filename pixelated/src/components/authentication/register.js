@@ -34,7 +34,6 @@ const Register = () => {
         e.preventDefault();
 
         let breachedPasswordCount = await passwordHasPwnd(formData["password"]);
-        console.log(`Breached: ${breachedPasswordCount}`)
 
         if (breachedPasswordCount > 0) {
             setErrorMessage(`The password you entered has been found in ${parseInt(breachedPasswordCount).toLocaleString()} known data breaches.  Please choose another password.`);

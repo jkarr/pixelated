@@ -4,7 +4,8 @@ import {useEffect, useRef, useState} from 'react';
 import Color from '../../utils/color.js';
 import ActionTable from '../actionTable/actionTable';
 import GameBoard from '../gameBoard/gameBoard.js';
-import { useUserSession } from '../../utils/userSession.js'
+import {useUserSession} from '../../utils/userSession.js'
+import useTimer from '../../utils/timer.js';
 
 import '../../styles/form.css';
 import pixelatedStyles from './pixelated.module.css'
@@ -23,6 +24,7 @@ export default function Pixelated() {
     const [boardSize, setBoardSize] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
     const [gameLost, setGameLost] = useState(false);
+    const [gameId, setGameId] = useState(0);
 
     const activeGameBoard = useRef(0);
     const winnerAnimating = useRef(false);
@@ -47,7 +49,9 @@ export default function Pixelated() {
         [Color.colors[1], Color.colors[1], Color.colors[1], Color.colors[1], Color.colors[1], Color.colors[1], Color.colors[1], Color.colors[1], Color.colors[1], Color.colors[1]]  // Bottom border
     ];
 
-    const { sessionId } = useUserSession();
+    const {sessionId} = useUserSession();
+
+    const {elapsedTime, startTimer, stopTimer, resetTimer} = useTimer();
 
     const handleEasyClick = () => {
         setDifficulty('easy');
@@ -65,6 +69,7 @@ export default function Pixelated() {
     }
 
     const handlePlayClick = () => {
+        resetTimer();
         winnerAnimating.current = false;
         clearInterval(animationInterval);
         Color.initColorCounts();
@@ -95,8 +100,9 @@ export default function Pixelated() {
 
         setShowMoveCounter(true);
         setShowMaxMoves(true);
-        recordGame(newTable, boardSize, sessionId());
+        startTimer();
         displayTable(newTable);
+        recordGame(newTable, boardSize, sessionId());
     }
 
     // Calculate max moves when the board size or difficulty changes
@@ -107,20 +113,23 @@ export default function Pixelated() {
             hard: 1.5
         };
 
+        let maximumMoves = calculateMaxMoves(boardSize);
+
         if (boardSize > 0 && difficulty)
-                setMaxMoves(calculateMaxMoves(boardSize));
+            setMaxMoves(maximumMoves);
 
         function calculateMaxMoves(boardSize) {
             const boardSizeFactor = Math.ceil(Math.log2(boardSize));
             return Math.round(boardSize * difficultyMaxMultiplier[difficulty]) + boardSizeFactor;
         }
 
-         if ((moves.current.length - 1) === maxMoves)
-             setGameLost(true);
-         else
-             setGameLost(false);
+        if ((moves.current.length - 1) > maximumMoves) {
+            stopTimer();
+            setGameLost(true);
+        } else
+            setGameLost(false);
 
-    }, [boardSize, difficulty, maxMoves, moves.current.length]);
+    }, [boardSize, difficulty, maxMoves, moves.current.length, stopTimer]);
 
     function validateGameSetup() {
         let size = document.getElementById('boardSize').value;
@@ -151,24 +160,48 @@ export default function Pixelated() {
     }
 
     function recordGame(board, boardSize, sessionId) {
-        return new Promise(resolve => {
-            const simpleTable = cloneTableAsSimple(board);
+        const simpleTable = cloneTableAsSimple(board);
 
-            let gameData = {
-                "userSessionToken": sessionId,
-                "board": JSON.stringify(simpleTable),
-                "boardSize": boardSize,
-                "created": new Date().toISOString()
-            };
+        let gameData = {
+            "userSessionToken": sessionId,
+            "board": JSON.stringify(simpleTable),
+            "boardSize": boardSize,
+            "created": new Date().toISOString()
+        };
 
-            axios.post(`${process.env.REACT_APP_REGISTER_GAME_API}/Save`, gameData)
-                .then(function (response){
-                    console.log(response.data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        });
+        axios.post(`${process.env.REACT_APP_REGISTER_GAME_API}/Save`, gameData)
+            .then(function (response) {
+                setGameId(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    function submitScore(sessionId) {
+        let scoreData = {
+            "userSessionToken": sessionId,
+            "gameId": gameId.toString(),
+            "maxMoves": maxMoves,
+            "finishedMoves": moves.current.length,
+            "elapsedTime": elapsedTime,
+            "difficulty": difficulty
+        };
+
+        axios.post(`${process.env.REACT_APP_REGISTER_GAME_API}/Score`, scoreData)
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+    function formatTime(ms) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
     function cloneTableAsSimple(board) {
@@ -201,8 +234,11 @@ export default function Pixelated() {
 
         floodFill(0, 0, gameColor, selectedColor);
 
-        if (isBoardFilled())
+        if (isBoardFilled()) {
+            stopTimer();
             winnerAnimation();
+            submitScore(sessionId());
+        }
 
         setGameColor(selectedColor);
 
@@ -324,10 +360,17 @@ export default function Pixelated() {
                         <label htmlFor="boardSize">Enter your desired board size (a number
                             from {minimumBoardSize} - {maximumBoardSize})</label><br/>
                         <input type="number" id="boardSize"/> &nbsp;
-                        <button type="button" id="easyButton" onClick={handleEasyClick}>Easy</button>&nbsp;
-                        <button type="button" id="mediumButton" onClick={handleMediumClick}>Medium</button>&nbsp;
-                        <button type="button" id="hardButton" onClick={handleHardClick}>Hard</button>&nbsp;
+                        <button type="button" id="easyButton" onClick={handleEasyClick}>Easy</button>
+                        &nbsp;
+                        <button type="button" id="mediumButton" onClick={handleMediumClick}>Medium</button>
+                        &nbsp;
+                        <button type="button" id="hardButton" onClick={handleHardClick}>Hard</button>
+                        &nbsp;
                     </div>
+
+                    <div id="timer">{
+                        elapsedTime > 0 && formatTime(elapsedTime)
+                    }</div>
 
                     <div className="errorMessageContainer">
                         {errorMessage && (
@@ -340,18 +383,19 @@ export default function Pixelated() {
                     {showMaxMoves && showMoveCounter && (
                         <div className={pixelatedStyles.moveCounterContainer}>
                             <div id="maxMoves" className={pixelatedStyles.numberOfMoves}>Max Moves: {maxMoves}</div>
-                            <div id="numberOfMoves" className={pixelatedStyles.numberOfMoves}>Number of Moves: {moves.current.length - 1}</div>
+                            <div id="numberOfMoves" className={pixelatedStyles.numberOfMoves}>Number of
+                                Moves: {moves.current.length - 1}</div>
                         </div>
                     )}
                 </section>
 
-                {gameLost && <GameBoard board={sadFaceBoard} numberOfColumns={10} /> }
+                {gameLost && <GameBoard board={sadFaceBoard} numberOfColumns={10}/>}
 
                 {activeGameBoard.current === 1 && !gameLost && <GameBoard board={gameBoard}
-                                                             numberOfColumns={boardSize}/>}
+                                                                          numberOfColumns={boardSize}/>}
 
                 {activeGameBoard.current === 2 && !gameLost && <GameBoard board={gameBoard2}
-                                                             numberOfColumns={boardSize}/>}
+                                                                          numberOfColumns={boardSize}/>}
             </div>
         </main>
     )
