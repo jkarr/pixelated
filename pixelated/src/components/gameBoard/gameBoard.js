@@ -1,6 +1,6 @@
 import styles from "./gameBoard.module.css";
 
-export default function GameBoard({ board, numberOfColumns }) {
+export default function GameBoard({board, numberOfColumns}) {
     const boardStyle = {
         gridTemplateColumns: `repeat(${numberOfColumns}, 25px)`
     }
@@ -27,10 +27,12 @@ export default function GameBoard({ board, numberOfColumns }) {
     }
 
     return (
-        <section style={boardStyle}
-                 className={styles.gameBoard}
-                 id="table">
-            {rows}
-        </section>
+        <>
+            <section style={boardStyle}
+                     className={styles.gameBoard}
+                     id="table">
+                {rows}
+            </section>
+        </>
     )
 }
