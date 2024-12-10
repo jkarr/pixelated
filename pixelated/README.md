@@ -1,70 +1,57 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Pixelated
 
-## Available Scripts
+Pixelated is a strategy puzzle where the ultimate goal is to transform a 
+multi-colored board into a single colored board.
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Screenshots
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![New Game](https://github.com/jkarr/pixelated/blob/main/pixelated/public/newGame.png?raw=true)
+![Game Won](https://github.com/jkarr/pixelated/blob/main/pixelated/public/wonGame.png?raw=true)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Documentation
 
-### `npm run build`
+There are two ways to play pixelated.  You can download the source code and run locally, or you can play at https://www.playpixelated.app
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Run on the web
+Visit [https://www.playpixelated.app](https://www.playpixelated.app)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Run locally
+First, you'll need to create a `.env.local` file in the `root` folder.
+Populate the file with the following:
+```
+REACT_APP_REGISTER_USER_API=https://api.playpixelated.app/User
+REACT_APP_REGISTER_GAME_API=https://api.playpixelated.app/Game
+```
+Next, do `npm start` from the root folder and navigate to [http://localhost:3000](http://localhost:3000)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `Questions`
 
-### `npm run eject`
+For questions, please reach out to johnie.karr@hotmail.com with 'Pixelated App' in the subject line.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Capstone Project Requirements
+### First Feature Set
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-[x] Use arrays, objects, sets or maps to store and retrieve information that is displayed in your app.
+-[x] Analyze data that is stored in arrays, objects, sets or maps and display information about it in your app.
+-[x] Analyze text and display useful information about it. (e.g. word/character count in an input field)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Second Feature Set
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+-[x] Create a form and store the submitted values using an external API (e.g. a contact form, survey, etc)
+-[x] Persist data to an external API and make the stored data accessible in your app
+ (including after reload/refresh).
 
-## Learn More
+### Optional
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+-[x] Develop your project using a common JavaScript framework such as React, Angular, or Vue
+-[x] Interact with a database to store and retrieve information (e.g. MySQL, MongoDB, etc)
+ ```
+  Note: I did not interact with the database directly in this app, but rather in my API, which I wrote in C# and am not exposing the code on GitHub. I'm happy to share with you if interested though.
+ ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Integrate a third-party API
+-[x] I wrote my own API using C#/.net Core and SqlServer. 
