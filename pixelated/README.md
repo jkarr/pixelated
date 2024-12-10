@@ -35,23 +35,23 @@ For questions, please reach out to johnie.karr@hotmail.com with 'Pixelated App' 
 # Capstone Project Requirements
 ### First Feature Set
 
--[x] Use arrays, objects, sets or maps to store and retrieve information that is displayed in your app.
--[x] Analyze data that is stored in arrays, objects, sets or maps and display information about it in your app.
--[x] Analyze text and display useful information about it. (e.g. word/character count in an input field)
+- [x] Use arrays, objects, sets or maps to store and retrieve information that is displayed in your app.
+- [x] Analyze data that is stored in arrays, objects, sets or maps and display information about it in your app.
+- [x] Analyze text and display useful information about it. (e.g. word/character count in an input field)
 
 ### Second Feature Set
 
--[x] Create a form and store the submitted values using an external API (e.g. a contact form, survey, etc)
--[x] Persist data to an external API and make the stored data accessible in your app
+- [x] Create a form and store the submitted values using an external API (e.g. a contact form, survey, etc)
+- [x] Persist data to an external API and make the stored data accessible in your app
  (including after reload/refresh).
 
 ### Optional
 
--[x] Develop your project using a common JavaScript framework such as React, Angular, or Vue
--[x] Interact with a database to store and retrieve information (e.g. MySQL, MongoDB, etc)
+- [x] Develop your project using a common JavaScript framework such as React, Angular, or Vue
+- [x] Interact with a database to store and retrieve information (e.g. MySQL, MongoDB, etc)
  ```
   Note: I did not interact with the database directly in this app, but rather in my API, which I wrote in C# and am not exposing the code on GitHub. I'm happy to share with you if interested though.
  ```
 
 ### Integrate a third-party API
--[x] I wrote my own API using C#/.net Core and SqlServer. 
+- [x] I wrote my own API using C#/.net Core and SqlServer. 
