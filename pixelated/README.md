@@ -54,4 +54,4 @@ For questions, please reach out to johnie.karr@hotmail.com with 'Pixelated App' 
  ```
 
 ### Integrate a third-party API
-- [x] I wrote my own API using C#/.net Core and SqlServer. 
+- [x] I integrated with Troy Hunt's PwnedPassword API
