@@ -24,6 +24,7 @@ export default function Pixelated() {
     const [cellCount, setCellCount] = useState(0);
     const [boardSize, setBoardSize] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
+    const [firstLoad, setFirstLoad] = useState(true);
     const [gameLost, setGameLost] = useState(false);
     const [gameId, setGameId] = useState(0);
 
@@ -104,6 +105,7 @@ export default function Pixelated() {
         startTimer();
         displayTable(newTable);
         recordGame(newTable, boardSize, sessionId());
+        setFirstLoad(false);
     }
 
     // Calculate max moves when the board size or difficulty changes
@@ -390,7 +392,7 @@ export default function Pixelated() {
                     )}
                 </section>
 
-                {gameLost && <GameBoard board={sadFaceBoard} numberOfColumns={10}/>}
+                {gameLost && !firstLoad && <GameBoard board={sadFaceBoard} numberOfColumns={10}/>}
 
                 {activeGameBoard.current === 1 && !gameLost && <GameBoard board={gameBoard}
                                                                           numberOfColumns={boardSize}/>}
