@@ -35,7 +35,7 @@ main {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
-  margin:3rem;
+  margin-top: 3rem;
   align-self: center;
 }
 
@@ -54,7 +54,6 @@ footer {
   background-color: #eee;
 }
 
-
 /* Footer sticky */
 footer {
   width: 100%;
@@ -65,6 +64,7 @@ footer {
   position: fixed;
   bottom: 0;
   left: 0;
+  height: 6rem;
 }
 
 /* Responsive */
@@ -89,14 +89,17 @@ footer {
   }
 }
 
-@media (max-height: 624px)
-{
-  .footer {
-    display: none;
+@media  (max-width: 858px) {
+  .main-container {
+    left: 0;
+    position: fixed;
   }
 }
 
-@container navbar (max-height: 50px) {
+@media (max-width: 375px) and (max-height: 667px),
+       (max-width: 360px) and (max-height: 740px),
+       (max-height: 630px)
+{
   footer {
     display: none;
   }

@@ -4,8 +4,9 @@
     justify-content: center;
     background-color: #ffffff; 
     padding: 1rem;
-    width: 99vw;
+    width: 100%;
     container-name: navbar;
+    container-type: inline-size;
     position: fixed;
     top: 0;
     left: 0;

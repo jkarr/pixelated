@@ -11,3 +11,13 @@
     /*padding: 0;*/
     /*line-height: 20px;*/
 }
+
+@media (max-height: 1015px) {
+    header {
+        display: none;
+    }
+
+    .gameBoard {
+        margin-top: 0;
+    }
+}
