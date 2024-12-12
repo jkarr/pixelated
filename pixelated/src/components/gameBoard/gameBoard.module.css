@@ -1,6 +1,6 @@
 .gameBoard {
     display: grid;
-    gap: 0; /* No gap between cells */
+    gap: 4px; /* No gap between cells */
     margin-top: 20px;
     justify-content: center;
 }
