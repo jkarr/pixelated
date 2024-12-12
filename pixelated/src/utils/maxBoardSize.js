@@ -6,7 +6,7 @@ export default function useMaxBoardSize(cellSize, minSize = 5, maxSize = 25) {
     useEffect(() => {
         function updateMaxBoardSize() {
             const screenWidth = window.innerWidth;
-            const padding = 75; // Adjust for margins/padding
+            const padding = 70; // Adjust for margins/padding
             const availableWidth = screenWidth - padding;
             const calculatedSize = Math.floor(availableWidth / cellSize);
 
