@@ -1,6 +1,6 @@
 .gameBoard {
     display: grid;
-    gap: 4px; /* No gap between cells */
+    gap: 0; /* No gap between cells */
     margin-top: 20px;
     justify-content: center;
 }
@@ -10,4 +10,14 @@
     height: 20px;
     /*padding: 0;*/
     /*line-height: 20px;*/
+}
+
+@media (max-height: 1015px) {
+    header {
+        display: none;
+    }
+
+    .gameBoard {
+        margin-top: 0;
+    }
 }

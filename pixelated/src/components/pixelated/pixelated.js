@@ -378,9 +378,9 @@ export default function Pixelated() {
                         )}
                     </div>
 
-                    {showActionTable && <ActionTable onActionClick={doMove}/>}
+                    {showActionTable  && !errorMessage && <ActionTable onActionClick={doMove}/>}
 
-                    {showMaxMoves && showMoveCounter && (
+                    {showMaxMoves && showMoveCounter && !errorMessage && (
                         <div className={pixelatedStyles.moveCounterContainer}>
                             <div id="maxMoves" className={pixelatedStyles.numberOfMoves}>Max Moves: {maxMoves}</div>
                             <div id="numberOfMoves" className={pixelatedStyles.numberOfMoves}>Number of

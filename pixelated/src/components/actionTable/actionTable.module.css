@@ -1,7 +1,7 @@
 .actionTable {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
 }
 
 .actionCell {
@@ -10,7 +10,7 @@
     margin: 0 5px; /* Spacing between action cells */
     border-radius: 5px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.7s ease;
 }
 
 .actionCell:hover {
