@@ -35,7 +35,7 @@ main {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
-  margin: 20px;
+  margin:3rem;
   align-self: center;
 }
 
@@ -49,7 +49,7 @@ main {
 }
 
 footer {
-  padding: 10px;
+  /*padding: 10px;*/
   text-align: center;
   background-color: #eee;
 }
@@ -57,8 +57,8 @@ footer {
 
 /* Footer sticky */
 footer {
-  width: 100vw;
-  padding: 10px 0;
+  width: 100%;
+  /*padding: 10px 0;*/
   background-color: #eee;
   text-align: center;
   color: #333;
@@ -86,6 +86,19 @@ footer {
     font-size: 14px;
     height: 40px;
     padding: 0 16px;
+  }
+}
+
+@media (max-height: 624px)
+{
+  .footer {
+    display: none;
+  }
+}
+
+@container navbar (max-height: 50px) {
+  footer {
+    display: none;
   }
 }
 
