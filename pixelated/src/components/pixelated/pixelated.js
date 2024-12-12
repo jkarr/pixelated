@@ -6,6 +6,7 @@ import ActionTable from '../actionTable/actionTable';
 import GameBoard from '../gameBoard/gameBoard.js';
 import {useUserSession} from '../../utils/userSession.js'
 import useTimer from '../../utils/timer.js';
+import useMaxBoardSize from '../../utils/maxBoardSize.js';
 
 import '../../styles/form.css';
 import pixelatedStyles from './pixelated.module.css'
@@ -30,7 +31,7 @@ export default function Pixelated() {
     const winnerAnimating = useRef(false);
     const moves = useRef([]);
     const minimumBoardSize = 5;
-    const maximumBoardSize = 25;
+    const maximumBoardSize = useMaxBoardSize(25);
     let actionTableBuilt = false;
     let rewinding = true;
     let currentMove = 0;
@@ -135,7 +136,7 @@ export default function Pixelated() {
         let size = document.getElementById('boardSize').value;
 
         if (size < minimumBoardSize || size > maximumBoardSize) {
-            setErrorMessage('Board size should be between 5 and 25.');
+            setErrorMessage(`Board size should be between ${minimumBoardSize} and ${maximumBoardSize}.`);
             return false;
         }
 
